@@ -1,0 +1,50 @@
+{
+  "name": "node-native2ascii",
+  "version": "0.1.0",
+  "description": "Node.js implementation of Java's Native-to-ASCII Converter",
+  "homepage": "https://github.com/NotNinja/node-native2ascii",
+  "bugs": {
+    "url": "https://github.com/NotNinja/node-native2ascii/issues"
+  },
+  "author": {
+    "name": "Alasdair Mercer",
+    "email": "mercer.alasdair@gmail.com",
+    "url": "https://not.ninja"
+  },
+  "license": "MIT",
+  "keywords": [
+    "native",
+    "ascii",
+    "converter",
+    "unicode",
+    "escape",
+    "unescape"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NotNinja/node-native2ascii.git"
+  },
+  "dependencies": {
+    "commander": "^2.12.2",
+    "debug": "^3.1.0",
+    "get-stdin": "^5.0.1",
+    "glob": "^7.1.2",
+    "iconv-lite": "^0.4.19"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.12.1",
+    "eslint-config-notninja": "^0.2.3",
+    "mocha": "^4.0.1"
+  },
+  "bin": {
+    "native2ascii": "bin/native2ascii"
+  },
+  "main": "src/native2ascii.js",
+  "scripts": {
+    "pretest": "eslint \"bin/native2ascii\" \"src/**/*.js\" \"test/**/*.js\""
+  },
+  "engines": {
+    "node": ">=8"
+  }
+}
