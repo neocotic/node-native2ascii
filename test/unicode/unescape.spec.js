@@ -22,4 +22,57 @@
 
 'use strict';
 
-// TODO: Complete
+const { expect } = require('chai');
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
+
+const unescape = require('../../src/unicode/unescape');
+
+const readFile = util.promisify(fs.readFile);
+
+describe('unicode/unescape', () => {
+  let escaped;
+
+  before(async() => {
+    escaped = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1.txt'), 'latin1');
+  });
+
+  it('should not attempt to unescape ascii characters', async() => {
+    const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/ascii.txt'), 'ascii');
+    const actual = unescape(expected);
+
+    expect(actual).to.equal(expected);
+  });
+
+  it('should not attempt to unescape latin1 characters', async() => {
+    const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/latin1.txt'), 'latin1');
+    const actual = unescape(expected);
+
+    expect(actual).to.equal(expected);
+  });
+
+  it('should unescape all escaped unicode values', async() => {
+    const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/utf8.txt'), 'utf8');
+    const actual = unescape(escaped);
+
+    expect(actual).to.equal(expected);
+  });
+
+  context('when string is empty', () => {
+    it('should return empty string', () => {
+      const expected = '';
+      const actual = unescape('');
+
+      expect(actual).to.equal(expected);
+    });
+  });
+
+  context('when string contains invalid escaped unicode value', () => {
+    it('should throw an error', () => {
+      expect(() => {
+        unescape('\\u00ah');
+      }).to.throw(Error, 'Unable to parse unicode: 00ah');
+    });
+  });
+});

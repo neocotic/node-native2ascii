@@ -22,4 +22,35 @@
 
 'use strict';
 
-// TODO: Complete
+const { expect } = require('chai');
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
+
+const escape = require('../../src/unicode/escape');
+
+const readFile = util.promisify(fs.readFile);
+
+describe('unicode/escape', () => {
+  let unescaped;
+
+  before(async() => {
+    unescaped = await readFile(path.resolve(__dirname, '../fixtures/unescaped/utf8.txt'), 'utf8');
+  });
+
+  it('should escape all non-ASCII characters', async() => {
+    const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1.txt'), 'latin1');
+    const actual = escape(unescaped);
+
+    expect(actual).to.equal(expected);
+  });
+
+  context('when string is empty', () => {
+    it('should return empty string', () => {
+      const expected = '';
+      const actual = escape('');
+
+      expect(actual).to.equal(expected);
+    });
+  });
+});

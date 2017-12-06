@@ -24,9 +24,33 @@
 
 // TODO: Complete
 
+const hexDigits = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' ];
+
 // TODO: Document
 function escape(str) {
-  // TODO: Complete
+  let result = '';
+
+  for (let i = 0, length = str.length; i < length; i++) {
+    const code = str.charCodeAt(i);
+
+    if (code > 0x7f) {
+      result += `\\u${toHex(code)}`;
+    } else {
+      result += str.charAt(i);
+    }
+  }
+
+  return result;
+}
+
+// TODO: Document
+function getHexDigit(n) {
+  return hexDigits[n & 15];
+}
+
+// TODO: Document
+function toHex(n) {
+  return getHexDigit((n >> 12) & 15) + getHexDigit((n >> 8) & 15) + getHexDigit((n >> 4) & 15) + getHexDigit(n & 15);
 }
 
 module.exports = escape;

@@ -26,9 +26,36 @@
 
 const { escape, unescape } = require('./unicode');
 
+const defaultEncoding = 'utf8';
+
 // TODO: Document
-function native2ascii(str, options) {
-  // TODO: Complete
+function native2ascii(input, options) {
+  if (input == null) {
+    return input;
+  }
+  if (!options) {
+    options = {};
+  }
+
+  let converter;
+  let inputEncoding;
+  let outputEncoding;
+
+  if (options.reverse) {
+    converter = unescape;
+    inputEncoding = 'latin1';
+    outputEncoding = options.encoding || defaultEncoding;
+  } else {
+    converter = escape;
+    inputEncoding = options.encoding || defaultEncoding;
+    outputEncoding = 'latin1';
+  }
+
+  // TODO: Use iconv-lite
+  const decodedInput = Buffer.from(input, inputEncoding).toString('utf8');
+  const encodedOutput = Buffer.from(converter(decodedInput), 'utf8').toString(outputEncoding);
+
+  return encodedOutput;
 }
 
 module.exports = native2ascii;

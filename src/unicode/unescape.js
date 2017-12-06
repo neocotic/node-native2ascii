@@ -26,7 +26,57 @@
 
 // TODO: Document
 function unescape(str) {
-  // TODO: Complete
+  let hadSlash = false;
+  let inUnicode = false;
+  let result = '';
+  let unicode = '';
+
+  for (let i = 0, length = str.length; i < length; i++) {
+    const ch = str.charAt(i);
+
+    if (inUnicode) {
+      unicode += ch;
+
+      if (unicode.length === 4) {
+        const code = Number(`0x${unicode}`);
+        if (Number.isNaN(code)) {
+          throw new Error(`Unable to parse unicode: ${unicode}`);
+        }
+
+        result += String.fromCharCode(code);
+
+        hadSlash = false;
+        inUnicode = false;
+        unicode = '';
+      }
+
+      continue;
+    }
+
+    if (hadSlash) {
+      hadSlash = false;
+
+      if (ch === 'u') {
+        inUnicode = true;
+      } else {
+        result += `\\${ch}`;
+      }
+
+      continue;
+    } else if (ch === '\\') {
+      hadSlash = true;
+
+      continue;
+    }
+
+    result += ch;
+  }
+
+  if (hadSlash) {
+    result += '\\';
+  }
+
+  return result;
 }
 
 module.exports = unescape;

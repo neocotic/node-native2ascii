@@ -26,10 +26,7 @@
   },
   "dependencies": {
     "commander": "^2.12.2",
-    "debug": "^3.1.0",
-    "get-stdin": "^5.0.1",
-    "glob": "^7.1.2",
-    "iconv-lite": "^0.4.19"
+    "get-stdin": "^5.0.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -42,7 +39,8 @@
   },
   "main": "src/native2ascii.js",
   "scripts": {
-    "pretest": "eslint \"bin/native2ascii\" \"src/**/*.js\" \"test/**/*.js\""
+    "pretest": "eslint \"bin/native2ascii\" \"src/**/*.js\" \"test/**/*.js\"",
+    "test": "mocha -R list \"test/**/*.spec.js\""
   },
   "engines": {
     "node": ">=8"
