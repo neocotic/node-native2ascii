@@ -23,3 +23,141 @@
 'use strict';
 
 // TODO: Complete
+
+const { Command } = require('commander');
+const fs = require('fs');
+const { EOL } = require('os');
+const path = require('path');
+const util = require('util');
+
+const native2ascii = require('./native2ascii');
+const { version } = require('../package.json');
+
+const readFile = util.promisify(fs.readFile);
+const writeFile = util.promisify(fs.writeFile);
+
+function getEncodings(command) {
+  const asciiEncoding = 'latin1';
+  const nativeEncoding = command.encoding || 'utf8';
+  let inputEncoding;
+  let outputEncoding;
+
+  if (command.reverse) {
+    inputEncoding = asciiEncoding;
+    outputEncoding = nativeEncoding;
+  } else {
+    inputEncoding = nativeEncoding;
+    outputEncoding = asciiEncoding;
+  }
+
+  return { inputEncoding, outputEncoding };
+}
+
+// TODO: Document
+async function parse(argv, options) {
+  options = parseOptions(options);
+
+  const command = new Command()
+    .version(version)
+    .usage('[options] [inputFile [outputFile]]')
+    .option('-e, --encoding <encoding>', 'specify encoding to be used by the conversion procedure')
+    .option('-r, --reverse', 'perform reverse operation')
+    .parse(argv);
+  const native2asciiOptions = { reverse: Boolean(command.reverse) };
+  const { inputEncoding, outputEncoding } = getEncodings(command);
+  const [ inputFile, outputFile ] = command.args;
+  const input = await readInput(inputFile, inputEncoding, options);
+  const output = native2ascii(input, native2asciiOptions);
+
+  await writeOutput(output, outputFile, outputEncoding, options);
+}
+
+// TODO: Document
+function parseOptions(options) {
+  return Object.assign({
+    cwd: process.cwd(),
+    stderr: process.stderr,
+    stdin: process.stdin,
+    stdout: process.stdout
+  }, options);
+}
+
+// TODO: Document
+async function readInput(file, encoding, options) {
+  let buffer;
+  if (file) {
+    buffer = await readFile(path.resolve(options.cwd, file));
+  } else {
+    buffer = await readStdin(options);
+  }
+
+  return buffer.toString(encoding);
+}
+
+// TODO: Document
+function readStdin(options) {
+  const { stdin } = options;
+  const data = [];
+  let length = 0;
+
+  return new Promise((resolve, reject) => {
+    if (stdin.isTTY) {
+      resolve(Buffer.alloc(0));
+    } else {
+      stdin.on('error', (error) => {
+        reject(error);
+      });
+
+      stdin.on('readable', () => {
+        let chunk;
+
+        while ((chunk = stdin.read()) != null) {
+          data.push(chunk);
+          length += chunk.length;
+        }
+      });
+
+      stdin.on('end', () => {
+        resolve(Buffer.concat(data, length));
+      });
+    }
+  });
+}
+
+// TODO: Document
+function writeError(message, options) {
+  options = parseOptions(options);
+
+  options.stderr.write(`${message}${EOL}`);
+}
+
+// TODO: Document
+async function writeOutput(output, file, encoding, options) {
+  if (file) {
+    await writeFile(path.resolve(options.cwd, file), output, encoding);
+  } else {
+    await writeStdout(output, encoding, options);
+  }
+}
+
+// TODO: Document
+function writeStdout(output, encoding, options) {
+  const { stdout } = options;
+
+  return new Promise((resolve, reject) => {
+    stdout.on('error', (error) => {
+      reject(error);
+    });
+
+    stdout.on('finish', () => {
+      resolve();
+    });
+
+    stdout.end(output, encoding);
+  });
+}
+
+module.exports = {
+  parse,
+  writeError
+};

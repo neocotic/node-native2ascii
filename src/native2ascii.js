@@ -31,9 +31,8 @@ function native2ascii(input, options) {
   if (input == null) {
     return input;
   }
-  if (!options) {
-    options = {};
-  }
+
+  options = Object.assign({ reverse: false }, options);
 
   const converter = options.reverse ? unescape : escape;
 
