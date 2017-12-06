@@ -30,8 +30,10 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "codecov": "^3.0.0",
     "eslint": "^4.12.1",
     "eslint-config-notninja": "^0.2.3",
+    "istanbul": "^0.4.5",
     "mocha": "^4.0.1"
   },
   "bin": {
@@ -39,8 +41,10 @@
   },
   "main": "src/native2ascii.js",
   "scripts": {
+    "report-coverage": "istanbul cover _mocha --report lcovonly -- -R list \"test/**/*.spec.js\" && codecov",
     "pretest": "eslint \"bin/native2ascii\" \"src/**/*.js\" \"test/**/*.js\"",
-    "test": "mocha -R list \"test/**/*.spec.js\""
+    "test": "istanbul cover _mocha -- -R list \"test/**/*.spec.js\"",
+    "posttest": "istanbul check-coverage"
   },
   "engines": {
     "node": ">=8"
