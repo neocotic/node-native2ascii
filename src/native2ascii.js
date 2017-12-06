@@ -26,8 +26,6 @@
 
 const { escape, unescape } = require('./unicode');
 
-const defaultEncoding = 'utf8';
-
 // TODO: Document
 function native2ascii(input, options) {
   if (input == null) {
@@ -37,25 +35,9 @@ function native2ascii(input, options) {
     options = {};
   }
 
-  let converter;
-  let inputEncoding;
-  let outputEncoding;
+  const converter = options.reverse ? unescape : escape;
 
-  if (options.reverse) {
-    converter = unescape;
-    inputEncoding = 'latin1';
-    outputEncoding = options.encoding || defaultEncoding;
-  } else {
-    converter = escape;
-    inputEncoding = options.encoding || defaultEncoding;
-    outputEncoding = 'latin1';
-  }
-
-  // TODO: Use iconv-lite
-  const decodedInput = Buffer.from(input, inputEncoding).toString('utf8');
-  const encodedOutput = Buffer.from(converter(decodedInput), 'utf8').toString(outputEncoding);
-
-  return encodedOutput;
+  return converter(input);
 }
 
 module.exports = native2ascii;

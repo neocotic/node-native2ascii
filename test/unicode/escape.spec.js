@@ -32,20 +32,31 @@ const escape = require('../../src/unicode/escape');
 const readFile = util.promisify(fs.readFile);
 
 describe('unicode/escape', () => {
-  let unescaped;
-
-  before(async() => {
-    unescaped = await readFile(path.resolve(__dirname, '../fixtures/unescaped/utf8.txt'), 'utf8');
-  });
-
-  it('should escape all non-ASCII characters', async() => {
-    const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1.txt'), 'latin1');
-    const actual = escape(unescaped);
+  it('should not escape any characters within ASCII character set', async() => {
+    const input = await readFile(path.resolve(__dirname, '../fixtures/unescaped/ascii.txt'), 'ascii');
+    const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-ascii.txt'), 'ascii');
+    const actual = escape(input);
 
     expect(actual).to.equal(expected);
   });
 
-  context('when string is empty', () => {
+  it('should only escape non-ASCII characters within ISO-8859-1 character set', async() => {
+    const input = await readFile(path.resolve(__dirname, '../fixtures/unescaped/latin1.txt'), 'latin1');
+    const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-latin1.txt'), 'latin1');
+    const actual = escape(input);
+
+    expect(actual).to.equal(expected);
+  });
+
+  it('should only escape non-ASCII characters within UTF-8 character set', async() => {
+    const input = await readFile(path.resolve(__dirname, '../fixtures/unescaped/utf8.txt'), 'utf8');
+    const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-utf8.txt'), 'latin1');
+    const actual = escape(input);
+
+    expect(actual).to.equal(expected);
+  });
+
+  context('when input is empty', () => {
     it('should return empty string', () => {
       const expected = '';
       const actual = escape('');

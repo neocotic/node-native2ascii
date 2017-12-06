@@ -32,34 +32,31 @@ const unescape = require('../../src/unicode/unescape');
 const readFile = util.promisify(fs.readFile);
 
 describe('unicode/unescape', () => {
-  let escaped;
-
-  before(async() => {
-    escaped = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1.txt'), 'latin1');
-  });
-
-  it('should not attempt to unescape ascii characters', async() => {
+  it('should not unescape any characters within ASCII character set', async() => {
+    const input = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-ascii.txt'), 'ascii');
     const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/ascii.txt'), 'ascii');
-    const actual = unescape(expected);
+    const actual = unescape(input);
 
     expect(actual).to.equal(expected);
   });
 
-  it('should not attempt to unescape latin1 characters', async() => {
+  it('should only unescape escaped unicode values within ISO-8859-1 character set', async() => {
+    const input = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-latin1.txt'), 'latin1');
     const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/latin1.txt'), 'latin1');
-    const actual = unescape(expected);
+    const actual = unescape(input);
 
     expect(actual).to.equal(expected);
   });
 
-  it('should unescape all escaped unicode values', async() => {
+  it('should only unescape escaped unicode values within UTF-8 character set', async() => {
+    const input = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-utf8.txt'), 'utf8');
     const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/utf8.txt'), 'utf8');
-    const actual = unescape(escaped);
+    const actual = unescape(input);
 
     expect(actual).to.equal(expected);
   });
 
-  context('when string is empty', () => {
+  context('when input is empty', () => {
     it('should return empty string', () => {
       const expected = '';
       const actual = unescape('');
@@ -68,7 +65,7 @@ describe('unicode/unescape', () => {
     });
   });
 
-  context('when string contains invalid escaped unicode value', () => {
+  context('when input contains invalid escaped unicode value', () => {
     it('should throw an error', () => {
       expect(() => {
         unescape('\\u00ah');

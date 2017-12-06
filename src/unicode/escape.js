@@ -27,16 +27,16 @@
 const hexDigits = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' ];
 
 // TODO: Document
-function escape(str) {
+function escape(input) {
   let result = '';
 
-  for (let i = 0, length = str.length; i < length; i++) {
-    const code = str.charCodeAt(i);
+  for (let i = 0, length = input.length; i < length; i++) {
+    const code = input.charCodeAt(i);
 
     if (code > 0x7f) {
       result += `\\u${toHex(code)}`;
     } else {
-      result += str.charAt(i);
+      result += input.charAt(i);
     }
   }
 

@@ -25,14 +25,14 @@
 // TODO: Complete
 
 // TODO: Document
-function unescape(str) {
+function unescape(input) {
   let hadSlash = false;
   let inUnicode = false;
   let result = '';
   let unicode = '';
 
-  for (let i = 0, length = str.length; i < length; i++) {
-    const ch = str.charAt(i);
+  for (let i = 0, length = input.length; i < length; i++) {
+    const ch = input.charAt(i);
 
     if (inUnicode) {
       unicode += ch;
