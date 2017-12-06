@@ -26,7 +26,7 @@
 
 const { Command } = require('commander');
 const fs = require('fs');
-const { EOL } = require('os');
+const os = require('os');
 const path = require('path');
 const util = require('util');
 
@@ -76,6 +76,7 @@ async function parse(argv, options) {
 function parseOptions(options) {
   return Object.assign({
     cwd: process.cwd(),
+    eol: os.EOL,
     stderr: process.stderr,
     stdin: process.stdin,
     stdout: process.stdout
@@ -128,7 +129,7 @@ function readStdin(options) {
 function writeError(message, options) {
   options = parseOptions(options);
 
-  options.stderr.write(`${message}${EOL}`);
+  options.stderr.write(`${message}${options.eol}`);
 }
 
 // TODO: Document

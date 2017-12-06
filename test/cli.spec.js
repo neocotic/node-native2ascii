@@ -23,3 +23,58 @@
 'use strict';
 
 // TODO: Complete
+
+const { expect } = require('chai');
+const fs = require('fs');
+const path = require('path');
+const { Writable } = require('stream');
+const util = require('util');
+
+const cli = require('../src/cli');
+
+const readFile = util.promisify(fs.readFile);
+
+describe('cli', () => {
+  class MockWritable extends Writable {
+
+    constructor(options) {
+      super(options);
+
+      this.buffer = Buffer.alloc(0);
+      this.length = 0;
+    }
+
+    _write(chunk, encoding, callback) {
+      this.length += chunk.length;
+      this.buffer = Buffer.concat([ this.buffer, Buffer.from(chunk, encoding) ], this.length);
+
+      callback();
+    }
+
+  }
+
+  let options;
+
+  beforeEach(() => {
+    options = {
+      cwd: __dirname,
+      eol: '\n',
+      stderr: new MockWritable(),
+      // TODO: Create MockReadable
+      stdin: null,
+      stdout: new MockWritable()
+    };
+  });
+
+  describe('.parse', () => {
+    // TODO: Complete
+  });
+
+  describe('.writeError', () => {
+    it('should write message to stderr', () => {
+      cli.writeError('foo', options);
+
+      expect(options.stderr.buffer.toString()).to.equal('foo\n');
+    });
+  });
+});
