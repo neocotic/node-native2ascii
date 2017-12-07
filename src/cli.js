@@ -37,6 +37,10 @@ const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
 function getEncodings(command) {
+  if (command.encoding && !Buffer.isEncoding(command.encoding)) {
+    throw new Error(`Invalid encoding: ${command.encoding}`);
+  }
+
   const asciiEncoding = 'latin1';
   const nativeEncoding = command.encoding || 'utf8';
   let inputEncoding;
