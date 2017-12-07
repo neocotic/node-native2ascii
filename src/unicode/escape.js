@@ -24,7 +24,12 @@
 
 const hexDigits = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' ];
 
-// TODO: Document
+/**
+ * Converts all Unicode characters within the specifed <code>input</code> to Unicode escapes ("\uxxxx" notation).
+ *
+ * @param {string} input - the string to be converted
+ * @return {string} The converted output from <code>input</code>.
+ */
 function escape(input) {
   let result = '';
 
@@ -41,14 +46,27 @@ function escape(input) {
   return result;
 }
 
-// TODO: Document
-function getHexDigit(n) {
-  return hexDigits[n & 15];
+/**
+ * Converts the specified character <code>code</code> to a hexadecimal value.
+ *
+ * @param {number} code - the character code to be converted
+ * @return {string} The 4-digit hexadecimal string.
+ */
+function toHex(code) {
+  return toHexDigit((code >> 12) & 15) +
+    toHexDigit((code >> 8) & 15) +
+    toHexDigit((code >> 4) & 15) +
+    toHexDigit(code & 15);
 }
 
-// TODO: Document
-function toHex(n) {
-  return getHexDigit((n >> 12) & 15) + getHexDigit((n >> 8) & 15) + getHexDigit((n >> 4) & 15) + getHexDigit(n & 15);
+/**
+ * Converts the specified <code>nibble</code> to a hexadecimal digit.
+ *
+ * @param {number} nibble - the nibble to be converted
+ * @return {string} The single-digit hexadecimal string.
+ */
+function toHexDigit(nibble) {
+  return hexDigits[nibble & 15];
 }
 
 module.exports = escape;

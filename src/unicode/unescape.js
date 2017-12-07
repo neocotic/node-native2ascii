@@ -24,7 +24,16 @@
 
 /* eslint complexity: "off" */
 
-// TODO: Document
+/**
+ * Converts all Unicode escapes ("\uxxxx" notation) within the specified <code>input</code> into their corresponding
+ * Unicode characters.
+ *
+ * This function will throw an error if <code>input</code> contains a malformed Unicode escape.
+ *
+ * @param {string} input - the string to be converted
+ * @return {string} The converted output from <code>input</code>.
+ * @throws {Error} If <code>input</code> contains a malformed Unicode escape.
+ */
 function unescape(input) {
   let result = '';
 
@@ -35,7 +44,7 @@ function unescape(input) {
       ch = input.charAt(++i);
 
       if (ch === 'u') {
-        result += getUnicode(input, i);
+        result += getUnicode(input, i + 1);
         i += 4;
       } else {
         result += `\\${ch}`;
@@ -48,10 +57,22 @@ function unescape(input) {
   return result;
 }
 
-// TODO: Document
+/**
+ * Attempts to convert the Unicode escape within <code>input</code> at the specified <code>offset</code>.
+ *
+ * <code>offset</code> should be the index of the first character after the "\u" prefix of the Unicode escape and will
+ * result in the offset being increased as it reads in the next four characters within <code>input</code>.
+ *
+ * This function will throw an error if the hexadecimal value corresponding to the Unicode escape at the specified
+ * <code>offset</code> is malformed.
+ *
+ * @param {string} input - the string to be converted
+ * @param {number} offset - the offset of the hexadecimal segment of the Unicode escape from which the Unicode character
+ * is to be derived relative to <code>input</code>
+ * @return {string} The Unicode character converted from the escape at <code>offset</code> within <code>input</code>.
+ * @throws {Error} If the Unicode escape is malformed.
+ */
 function getUnicode(input, offset) {
-  offset++;
-
   let unicode = 0;
 
   for (let i = offset, end = offset + 4; i < end; i++) {
