@@ -22,8 +22,6 @@
 
 'use strict';
 
-// TODO: Complete
-
 const { Command } = require('commander');
 const fs = require('fs');
 const os = require('os');

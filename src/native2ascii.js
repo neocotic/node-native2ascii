@@ -22,8 +22,6 @@
 
 'use strict';
 
-// TODO: Complete
-
 const { escape, unescape } = require('./unicode');
 
 // TODO: Document

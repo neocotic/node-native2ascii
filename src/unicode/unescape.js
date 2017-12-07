@@ -24,8 +24,6 @@
 
 /* eslint complexity: "off" */
 
-// TODO: Complete
-
 // TODO: Document
 function unescape(input) {
   let result = '';
