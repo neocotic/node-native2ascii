@@ -275,7 +275,7 @@ describe('cli', () => {
       it('should escape all non-ASCII characters read from input file and write to output file', async() => {
         await cli.parse([
           null, null,
-          path.resolve(__dirname, './fixtures/unescaped/utf8.txt'),
+          './fixtures/unescaped/utf8.txt',
           outputFile
         ], options);
 
@@ -289,7 +289,7 @@ describe('cli', () => {
         it('should write empty buffer to output file', async() => {
           await cli.parse([
             null, null,
-            path.resolve(__dirname, './fixtures/empty.txt'),
+            './fixtures/empty.txt',
             outputFile
           ], options);
 
@@ -305,7 +305,7 @@ describe('cli', () => {
           await cli.parse([
             null, null,
             '--encoding', 'latin1',
-            path.resolve(__dirname, './fixtures/unescaped/latin1.txt'),
+            './fixtures/unescaped/latin1.txt',
             outputFile
           ], options);
 
@@ -321,7 +321,7 @@ describe('cli', () => {
               await cli.parse([
                 null, null,
                 '--encoding', 'foo',
-                path.resolve(__dirname, './fixtures/unescaped/latin1.txt'),
+                './fixtures/unescaped/latin1.txt',
                 outputFile
               ], options);
               // Should have thrown
@@ -344,7 +344,7 @@ describe('cli', () => {
           await cli.parse([
             null, null,
             '--reverse',
-            path.resolve(__dirname, './fixtures/escaped/latin1-from-utf8.txt'),
+            './fixtures/escaped/latin1-from-utf8.txt',
             outputFile
           ], options);
 
@@ -361,7 +361,7 @@ describe('cli', () => {
             null, null,
             '--encoding', 'latin1',
             '--reverse',
-            path.resolve(__dirname, './fixtures/escaped/latin1-from-latin1.txt'),
+            './fixtures/escaped/latin1-from-latin1.txt',
             outputFile
           ], options);
 
@@ -404,7 +404,7 @@ describe('cli', () => {
           expect(process.stdout.write.callCount).to.equal(1);
           expect(process.stdout.write.getCall(0).args).to.deep.equal([
             `
-  Usage: native2ascii [options] [inputFile] [outputFile]
+  Usage: native2ascii [options] [inputfile] [outputfile]
 
 
   Options:

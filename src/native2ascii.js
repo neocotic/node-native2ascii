@@ -36,7 +36,7 @@ const { escape, unescape } = require('./unicode');
  * Unicode escape.
  *
  * @param {?string} input - the string to be converted (may be <code>null</code>)
- * @param {?native2ascii~Options} [options] - the options to be used (may be <code>null</code>)
+ * @param {?native2ascii~native2asciiOptions} [options] - the options to be used (may be <code>null</code>)
  * @return {?string} The converted output from <code>input</code> or
  * <code>null</code> if <code>input</code> is <code>null</code>.
  * @throws {Error} If the <code>reverse</code> option is enabled and <code>input</code> contains a malformed Unicode
@@ -59,7 +59,7 @@ module.exports = native2ascii;
 /**
  * The options that can be passed to {@link native2ascii}.
  *
- * @typedef {Object} native2ascii~Options
+ * @typedef {Object} native2ascii~native2asciiOptions
  * @property {?boolean} [reverse] - <code>true</code> to reverse the operation; otherwise <code>false</code>. May be
  * <code>null</code>.
  */

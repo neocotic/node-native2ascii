@@ -34,6 +34,17 @@ const { version } = require('../package.json');
 const readFile = util.promisify(fs.readFile);
 const writeFile = util.promisify(fs.writeFile);
 
+/**
+ * Determines the character encodings to be used to read input and write output based on the specified
+ * <code>command</code>.
+ *
+ * This function will throw an error if <code>command.encoding</code> is specified but is not a valid character
+ * encoding.
+ *
+ * @param {Command} command - the <code>Command</code> for the parsed arguments
+ * @return {cli~Encodings} The character encodings to be used.
+ * @throws {Error} If <code>command.encoding</code> is specified but is invalid.
+ */
 function getEncodings(command) {
   if (command.encoding && !Buffer.isEncoding(command.encoding)) {
     throw new Error(`Invalid encoding: ${command.encoding}`);
@@ -55,12 +66,35 @@ function getEncodings(command) {
   return { inputEncoding, outputEncoding };
 }
 
-// TODO: Document
+/**
+ * Parses the command line arguments and performs the necessary operation.
+ *
+ * The primary operation is to convert a file that is encoded to any character encoding that is supported by Node.js
+ * (which can be controlled via the "encoding" command line option) to a file encoded in ASCII, using Unicode escapes
+ * ("\uxxxx" notation) for all characters that are not part of the ASCII character set.
+ *
+ * This command is useful for properties files containing characters not in ISO-8859-1 character sets.
+ *
+ * A reverse conversion can be performed by passing the "reverse" command line option.
+ *
+ * If the "outputfile" command line argument is omitted, standard output is used for output. If, in addition, the
+ * "inputfile" command line argument is omitted, standard input is used for input.
+ *
+ * The Node.js process may exist as a result if calling this function, depending on how <code>argv</code> are parsed.
+ *
+ * Optionally, <code>options</code> can be specified for additional control, however, this is primarily intended for
+ * testing purposes only.
+ *
+ * @param {string[]} argv - the command line arguments to be parsed
+ * @param {?cli~parseOptions} [options] - the options to be used (may be <code>null</code>)
+ * @return {Promise.<void, Error>} A <code>Promise</code> that is resolved once the conversion operation has completed,
+ * if needed.
+ */
 async function parse(argv, options) {
   options = parseOptions(options);
 
   const command = new Command('native2ascii')
-    .arguments('[inputFile] [outputFile]')
+    .arguments('[inputfile] [outputfile]')
     .option('-e, --encoding <encoding>', 'specify encoding to be used by the conversion procedure')
     .option('-r, --reverse', 'perform reverse operation')
     .version(version)
@@ -75,7 +109,14 @@ async function parse(argv, options) {
   await writeOutput(output, outputFile, outputEncoding, options);
 }
 
-// TODO: Document
+/**
+ * Parses the specified <code>options</code>, using default values where needed.
+ *
+ * This function does not modify <code>options</code> but, instead, returns a new object based on it.
+ *
+ * @param {?cli~parseOptions} options - the options to be parsed (may be <code>null</code>)
+ * @return {cli~parseOptions} The parsed options.
+ */
 function parseOptions(options) {
   return Object.assign({
     cwd: process.cwd(),
@@ -165,3 +206,22 @@ module.exports = {
   parse,
   writeError
 };
+
+/**
+ * Contains the character encodings to be used when reading input and writing output.
+ *
+ * @typedef {Object} cli~Encodings
+ * @property {string} inputEncoding - The character encoding to be used when reading input.
+ * @property {string} outputEncoding - The character encoding to be used when writing output.
+ */
+
+/**
+ * The options that can be passed to {@link parse}.
+ *
+ * @typedef {Object} cli~parseOptions
+ * @property {string} [cwd=process.cwd()] - The current working directory to be used.
+ * @property {string} [eol=os.EOL] - The end-of-line character to be used.
+ * @property {Writable} [stderr=process.stderr] - The stream to which standard errors may be written.
+ * @property {Readable} [stdin=process.stdin] - The stream from which standard input may be read.
+ * @property {Writable} [stdout=process.stdout] - The stream to which standard output may be written.
+ */
