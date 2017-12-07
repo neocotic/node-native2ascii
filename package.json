@@ -25,8 +25,7 @@
     "url": "https://github.com/NotNinja/node-native2ascii.git"
   },
   "dependencies": {
-    "commander": "^2.12.2",
-    "get-stdin": "^5.0.1"
+    "commander": "^2.12.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",
