@@ -34,7 +34,8 @@
     "eslint": "^4.12.1",
     "eslint-config-notninja": "^0.2.3",
     "istanbul": "^0.4.5",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "sinon": "^4.1.2"
   },
   "bin": {
     "native2ascii": "bin/native2ascii"

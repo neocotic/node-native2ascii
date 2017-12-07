@@ -27,26 +27,49 @@
 const { expect } = require('chai');
 const fs = require('fs');
 const path = require('path');
-const { Writable } = require('stream');
+const sinon = require('sinon');
+const { Readable, Writable } = require('stream');
 const util = require('util');
 
 const cli = require('../src/cli');
+const { version } = require('../package.json');
 
 const readFile = util.promisify(fs.readFile);
 
 describe('cli', () => {
+  class MockReadable extends Readable {
+
+    constructor(buffer, options) {
+      super(options);
+
+      this.buffer = buffer || Buffer.alloc(0);
+      this._bufferRead = false;
+    }
+
+    _read() {
+      if (this._bufferRead) {
+        this.push(null);
+      } else {
+        this.push(this.buffer);
+
+        this._bufferRead = true;
+      }
+    }
+
+  }
+
   class MockWritable extends Writable {
 
     constructor(options) {
       super(options);
 
       this.buffer = Buffer.alloc(0);
-      this.length = 0;
+      this._length = 0;
     }
 
     _write(chunk, encoding, callback) {
-      this.length += chunk.length;
-      this.buffer = Buffer.concat([ this.buffer, Buffer.from(chunk, encoding) ], this.length);
+      this._length += chunk.length;
+      this.buffer = Buffer.concat([ this.buffer, Buffer.from(chunk, encoding) ], this._length);
 
       callback();
     }
@@ -60,14 +83,93 @@ describe('cli', () => {
       cwd: __dirname,
       eol: '\n',
       stderr: new MockWritable(),
-      // TODO: Create MockReadable
-      stdin: null,
+      stdin: new MockReadable(),
       stdout: new MockWritable()
     };
   });
 
   describe('.parse', () => {
     // TODO: Complete
+    context('when --help option is included in argv', () => {
+      function cleanUp() {
+        if (process.exit.restore) {
+          process.exit.restore();
+        }
+        if (process.stdout.write.restore) {
+          process.stdout.write.restore();
+        }
+      }
+
+      beforeEach(() => {
+        sinon.stub(process, 'exit');
+        sinon.stub(process.stdout, 'write');
+      });
+
+      afterEach(cleanUp);
+
+      it('should print help information and exit', async() => {
+        process.exit.throws();
+
+        try {
+          await cli.parse([ null, null, '--help' ], options);
+        } catch (e) {
+          expect(process.stdout.write.callCount).to.equal(1);
+          expect(process.stdout.write.getCall(0).args).to.deep.equal([
+            `
+  Usage: native2ascii [options] [inputFile] [outputFile]
+
+
+  Options:
+
+    -e, --encoding <encoding>  specify encoding to be used by the conversion procedure
+    -r, --reverse              perform reverse operation
+    -V, --version              output the version number
+    -h, --help                 output usage information
+`
+          ]);
+          expect(process.exit.callCount).to.be.at.least(1);
+          expect(process.exit.getCall(0).args).to.deep.equal([ 0 ]);
+        } finally {
+          cleanUp();
+        }
+      });
+    });
+
+    context('when --version option is included in argv', () => {
+      function cleanUp() {
+        if (process.exit.restore) {
+          process.exit.restore();
+        }
+        if (process.stdout.write.restore) {
+          process.stdout.write.restore();
+        }
+      }
+
+      beforeEach(() => {
+        sinon.stub(process, 'exit');
+        sinon.stub(process.stdout, 'write');
+      });
+
+      afterEach(cleanUp);
+
+      it('should print version and exit', async() => {
+        process.exit.throws();
+
+        try {
+          await cli.parse([ null, null, '--version' ], options);
+        } catch (e) {
+          expect(process.stdout.write.callCount).to.equal(1);
+          expect(process.stdout.write.getCall(0).args).to.deep.equal([
+            `${version}
+`
+          ]);
+          expect(process.exit.callCount).to.be.at.least(1);
+          expect(process.exit.getCall(0).args).to.deep.equal([ 0 ]);
+        } finally {
+          cleanUp();
+        }
+      });
+    });
   });
 
   describe('.writeError', () => {

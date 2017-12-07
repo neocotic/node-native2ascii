@@ -57,12 +57,13 @@ function getEncodings(command) {
 async function parse(argv, options) {
   options = parseOptions(options);
 
-  const command = new Command()
-    .version(version)
-    .usage('[options] [inputFile [outputFile]]')
+  const command = new Command('native2ascii')
+    .arguments('[inputFile] [outputFile]')
     .option('-e, --encoding <encoding>', 'specify encoding to be used by the conversion procedure')
     .option('-r, --reverse', 'perform reverse operation')
+    .version(version)
     .parse(argv);
+
   const native2asciiOptions = { reverse: Boolean(command.reverse) };
   const { inputEncoding, outputEncoding } = getEncodings(command);
   const [ inputFile, outputFile ] = command.args;
