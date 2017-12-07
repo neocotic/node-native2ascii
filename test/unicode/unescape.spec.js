@@ -69,7 +69,7 @@ describe('unicode/unescape', () => {
     it('should throw an error', () => {
       expect(() => {
         unescape('\\u00ah');
-      }).to.throw(Error, 'Unable to parse unicode: 00ah');
+      }).to.throw(Error, 'Malformed character found in \\uxxxx encoding: h');
     });
   });
 });

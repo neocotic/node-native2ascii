@@ -22,61 +22,79 @@
 
 'use strict';
 
+/* eslint complexity: "off" */
+
 // TODO: Complete
 
 // TODO: Document
 function unescape(input) {
-  let hadSlash = false;
-  let inUnicode = false;
   let result = '';
-  let unicode = '';
 
   for (let i = 0, length = input.length; i < length; i++) {
-    const ch = input.charAt(i);
+    let ch = input.charAt(i);
 
-    if (inUnicode) {
-      unicode += ch;
-
-      if (unicode.length === 4) {
-        const code = Number(`0x${unicode}`);
-        if (Number.isNaN(code)) {
-          throw new Error(`Unable to parse unicode: ${unicode}`);
-        }
-
-        result += String.fromCharCode(code);
-
-        hadSlash = false;
-        inUnicode = false;
-        unicode = '';
-      }
-
-      continue;
-    }
-
-    if (hadSlash) {
-      hadSlash = false;
+    if (ch === '\\') {
+      ch = input.charAt(++i);
 
       if (ch === 'u') {
-        inUnicode = true;
+        result += getUnicode(input, i);
+        i += 4;
       } else {
         result += `\\${ch}`;
       }
-
-      continue;
-    } else if (ch === '\\') {
-      hadSlash = true;
-
-      continue;
+    } else {
+      result += ch;
     }
-
-    result += ch;
-  }
-
-  if (hadSlash) {
-    result += '\\';
   }
 
   return result;
+}
+
+// TODO: Document
+function getUnicode(input, offset) {
+  offset++;
+
+  let unicode = 0;
+
+  for (let i = offset, end = offset + 4; i < end; i++) {
+    const ch = input.charAt(i);
+    const code = ch.charCodeAt(0);
+
+    switch (ch) {
+    case '0':
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+      unicode = (unicode << 4) + code - 0x30;
+      break;
+    case 'A':
+    case 'B':
+    case 'C':
+    case 'D':
+    case 'E':
+    case 'F':
+      unicode = (unicode << 4) + 10 + code - 0x41;
+      break;
+    case 'a':
+    case 'b':
+    case 'c':
+    case 'd':
+    case 'e':
+    case 'f':
+      unicode = (unicode << 4) + 10 + code - 0x61;
+      break;
+    default:
+      throw new Error(`Malformed character found in \\uxxxx encoding: ${ch}`);
+    }
+  }
+
+  return String.fromCharCode(unicode);
 }
 
 module.exports = unescape;
