@@ -56,6 +56,13 @@ describe('unicode/unescape', () => {
     expect(actual).to.equal(expected);
   });
 
+  it('should ignore case when unescaping escaped unicode values', () => {
+    const expected = '\u001a\u001b\u001c\u001d\u001e\u001f';
+    const actual = unescape('\\u001A\\u001B\\u001C\\u001D\\u001E\\u001F');
+
+    expect(actual).to.equal(expected);
+  });
+
   context('when input is empty', () => {
     it('should return empty string', () => {
       const expected = '';

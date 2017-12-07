@@ -38,14 +38,19 @@ const readFile = util.promisify(fs.readFile);
 describe('cli', () => {
   class MockReadable extends Readable {
 
-    constructor(buffer, options) {
+    constructor(options) {
       super(options);
 
-      this.buffer = buffer || Buffer.alloc(0);
+      this.buffer = Buffer.alloc(0);
+      this.error = null;
       this._bufferRead = false;
     }
 
     _read() {
+      if (this.error) {
+        this.emit('error', this.error);
+      }
+
       if (this.buffer.length === 0) {
         this._bufferRead = true;
       }
@@ -67,14 +72,19 @@ describe('cli', () => {
       super(options);
 
       this.buffer = Buffer.alloc(0);
+      this.error = null;
       this._length = 0;
     }
 
     _write(chunk, encoding, callback) {
+      if (this.error) {
+        return callback(this.error);
+      }
+
       this._length += chunk.length;
       this.buffer = Buffer.concat([ this.buffer, Buffer.from(chunk, encoding) ], this._length);
 
-      callback();
+      return callback();
     }
 
   }
@@ -109,6 +119,60 @@ describe('cli', () => {
           const expected = Buffer.alloc(0);
 
           await cli.parse([ null, null ], options);
+
+          expect(options.stdout.buffer).to.deep.equal(expected);
+        });
+      });
+
+      context('and STDIN is TTY', () => {
+        it('should write empty buffer to STDOUT', async() => {
+          const input = await readFile(path.resolve(__dirname, './fixtures/unescaped/utf8.txt'));
+          const expected = Buffer.alloc(0);
+
+          options.stdin.buffer = input;
+          options.stdin.isTTY = true;
+
+          await cli.parse([ null, null ], options);
+
+          expect(options.stdout.buffer).to.deep.equal(expected);
+        });
+      });
+
+      context('and failed to read from STDIN', () => {
+        it('should throw an error', async() => {
+          const expected = Buffer.alloc(0);
+          const expectedError = new Error('foo');
+
+          options.stdin.error = expectedError;
+
+          try {
+            await cli.parse([ null, null ], options);
+            // Should have thrown
+            expect.fail();
+          } catch (e) {
+            expect(e).to.equal(expectedError);
+          }
+
+          expect(options.stdout.buffer).to.deep.equal(expected);
+        });
+      });
+
+      context('and failed to write to STDOUT', () => {
+        it('should throw an error', async() => {
+          const input = await readFile(path.resolve(__dirname, './fixtures/unescaped/utf8.txt'));
+          const expected = Buffer.alloc(0);
+          const expectedError = new Error('foo');
+
+          options.stdin.buffer = input;
+          options.stdout.error = expectedError;
+
+          try {
+            await cli.parse([ null, null ], options);
+            // Should have thrown
+            expect.fail();
+          } catch (e) {
+            expect(e).to.equal(expectedError);
+          }
 
           expect(options.stdout.buffer).to.deep.equal(expected);
         });
