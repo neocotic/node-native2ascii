@@ -1,6 +1,4 @@
-coverage/
 test/
 .*
 AUTHORS.md
-codecov.yml
 CONTRIBUTING.md
