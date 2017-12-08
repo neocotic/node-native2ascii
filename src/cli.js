@@ -86,7 +86,7 @@ function getEncodings(command) {
  * testing purposes only.
  *
  * @param {string[]} argv - the command line arguments to be parsed
- * @param {?cli~parseOptions} [options] - the options to be used (may be <code>null</code>)
+ * @param {?cli~Options} [options] - the options to be used (may be <code>null</code>)
  * @return {Promise.<void, Error>} A <code>Promise</code> that is resolved once the conversion operation has completed,
  * if needed.
  */
@@ -114,8 +114,8 @@ async function parse(argv, options) {
  *
  * This function does not modify <code>options</code> but, instead, returns a new object based on it.
  *
- * @param {?cli~parseOptions} options - the options to be parsed (may be <code>null</code>)
- * @return {cli~parseOptions} The parsed options.
+ * @param {?cli~Options} options - the options to be parsed (may be <code>null</code>)
+ * @return {cli~Options} The parsed options.
  */
 function parseOptions(options) {
   return Object.assign({
@@ -127,7 +127,17 @@ function parseOptions(options) {
   }, options);
 }
 
-// TODO: Document
+/**
+ * Reads the input to be converted as a string using the character <code>encoding</code> provided.
+ *
+ * If <code>file</code> is specified, its contents are read as the input. Otherwise, the input is read directly from
+ * STDIN.
+ *
+ * @param {?string} file - the input file to be read (may be <code>null</code>)
+ * @param {string} encoding - the character encoding to be used to read the input
+ * @param {cli~Options} options - the options to be used
+ * @return {Promise.<string, Error>} A <code>Promise</code> that is resolved with the input to be converted.
+ */
 async function readInput(file, encoding, options) {
   let buffer;
   if (file) {
@@ -139,7 +149,12 @@ async function readInput(file, encoding, options) {
   return buffer.toString(encoding);
 }
 
-// TODO: Document
+/**
+ * Reads the input from STDIN.
+ *
+ * @param {cli~Options} options - the options to be used
+ * @return {Promise.<Buffer, Error>} A <code>Promise</code> that is resolved with the input read from STDIN.
+ */
 function readStdin(options) {
   const { stdin } = options;
   const data = [];
@@ -169,14 +184,31 @@ function readStdin(options) {
   });
 }
 
-// TODO: Document
+/**
+ * Writes the specified <code>message</code> to STDERR.
+ *
+ * @param {string} message - the error message to be written
+ * @param {?cli~Options} [options] - the options to be used (may be <code>null</code>)
+ * @return {void}
+ */
 function writeError(message, options) {
   options = parseOptions(options);
 
   options.stderr.write(`${message}${options.eol}`);
 }
 
-// TODO: Document
+/**
+ * Writes the specified <code>output</code> as a string using the character <code>encoding</code> provided.
+ *
+ * If <code>file</code> is specified, <code>output</code> will be written to it. Otherwise, <code>output</code> is
+ * written directly to STDOUT.
+ *
+ * @param {string} output - the output to be written
+ * @param {?string} file - the file to which <code>output</code> should be written (may be <code>null</code>)
+ * @param {string} encoding - the character encoding to be used to write <code>output</code>
+ * @param {cli~Options} options - the options to be used
+ * @return {Promise.<void, Error>} A <code>Promise</code> that is resolved once <code>output</code> has be written.
+ */
 async function writeOutput(output, file, encoding, options) {
   if (file) {
     await writeFile(path.resolve(options.cwd, file), output, encoding);
@@ -185,7 +217,15 @@ async function writeOutput(output, file, encoding, options) {
   }
 }
 
-// TODO: Document
+/**
+ * Writes the specified <code>output</code> to STDOUT using the character <code>encoding</code> provided.
+ *
+ * @param {string} output - the output to be written to STDOUT
+ * @param {string} encoding - the character encoding to be used to write <code>output</code>
+ * @param {cli~Options} options - the options to be used
+ * @return {Promise.<void, Error>} A <code>Promise</code> that is resolved once <code>output</code> has be written to
+ * STDOUT.
+ */
 function writeStdout(output, encoding, options) {
   const { stdout } = options;
 
@@ -218,7 +258,7 @@ module.exports = {
 /**
  * The options that can be passed to {@link parse}.
  *
- * @typedef {Object} cli~parseOptions
+ * @typedef {Object} cli~Options
  * @property {string} [cwd=process.cwd()] - The current working directory to be used.
  * @property {string} [eol=os.EOL] - The end-of-line character to be used.
  * @property {Writable} [stderr=process.stderr] - The stream to which standard errors may be written.
