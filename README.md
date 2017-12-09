@@ -108,7 +108,7 @@ A reverse conversion can be performed by enabling the `reverse` option.
 Unicode escape characters not in the ASCII character set so that they can be safely written encoded into ASCII:
 
 ``` javascript
-const native2ascii = require('native2ascii');
+const native2ascii = require('node-native2ascii');
 
 native2ascii('I ♥ native2ascii!');
 //=> "I \u2665 native2ascii!"
@@ -117,7 +117,7 @@ native2ascii('I ♥ native2ascii!');
 These can be later unescaped by reversing the operation:
 
 ``` javascript
-const native2ascii = require('native2ascii');
+const native2ascii = require('node-native2ascii');
 
 native2ascii('I \u2665 native2ascii!', { reverse: true });
 //=> "I ♥ native2ascii!"
