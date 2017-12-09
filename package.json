@@ -1,6 +1,6 @@
 {
   "name": "node-native2ascii",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Node.js implementation of Java's Native-to-ASCII Converter",
   "homepage": "https://github.com/NotNinja/node-native2ascii",
   "bugs": {
@@ -30,7 +30,7 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "codecov": "^3.0.0",
-    "eslint": "^4.12.1",
+    "eslint": "^4.13.0",
     "eslint-config-notninja": "^0.2.3",
     "mocha": "^4.0.1",
     "nyc": "^11.3.0",
