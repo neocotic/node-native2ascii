@@ -2,5 +2,6 @@ coverage/
 test/
 .*
 AUTHORS.md
+CHANGES.md
 codecov.yml
 CONTRIBUTING.md
