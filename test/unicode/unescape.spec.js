@@ -76,7 +76,11 @@ describe('unicode/unescape', () => {
     it('should throw an error', () => {
       expect(() => {
         unescape('\\u00ah');
-      }).to.throw(Error, 'Malformed character found in \\uxxxx encoding: h');
+      }).to.throw(Error, 'Unexpected character "h" found at 5');
+
+      expect(() => {
+        unescape('\\u00a');
+      }).to.throw(Error, 'Insufficient characters found: -1');
     });
   });
 });
