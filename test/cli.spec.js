@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Alasdair Mercer, !ninja
+ * Copyright (C) 2018 Alasdair Mercer, !ninja
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 'use strict';
 
-const { expect } = require('chai');
+const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const sinon = require('sinon');
@@ -111,7 +111,7 @@ describe('cli', () => {
 
         await cli.parse([ null, null ], options);
 
-        expect(options.stdout.buffer).to.deep.equal(expected);
+        assert.deepEqual(options.stdout.buffer, expected);
       });
 
       context('and STDIN is empty', () => {
@@ -120,7 +120,7 @@ describe('cli', () => {
 
           await cli.parse([ null, null ], options);
 
-          expect(options.stdout.buffer).to.deep.equal(expected);
+          assert.deepEqual(options.stdout.buffer, expected);
         });
       });
 
@@ -134,7 +134,7 @@ describe('cli', () => {
 
           await cli.parse([ null, null ], options);
 
-          expect(options.stdout.buffer).to.deep.equal(expected);
+          assert.deepEqual(options.stdout.buffer, expected);
         });
       });
 
@@ -148,12 +148,12 @@ describe('cli', () => {
           try {
             await cli.parse([ null, null ], options);
             // Should have thrown
-            expect.fail();
+            assert.fail();
           } catch (e) {
-            expect(e).to.equal(expectedError);
+            assert.strictEqual(e, expectedError);
           }
 
-          expect(options.stdout.buffer).to.deep.equal(expected);
+          assert.deepEqual(options.stdout.buffer, expected);
         });
       });
 
@@ -169,12 +169,12 @@ describe('cli', () => {
           try {
             await cli.parse([ null, null ], options);
             // Should have thrown
-            expect.fail();
+            assert.fail();
           } catch (e) {
-            expect(e).to.equal(expectedError);
+            assert.strictEqual(e, expectedError);
           }
 
-          expect(options.stdout.buffer).to.deep.equal(expected);
+          assert.deepEqual(options.stdout.buffer, expected);
         });
       });
 
@@ -190,7 +190,7 @@ describe('cli', () => {
             '--encoding', 'latin1'
           ], options);
 
-          expect(options.stdout.buffer).to.deep.equal(expected);
+          assert.deepEqual(options.stdout.buffer, expected);
         });
 
         context('and value is invalid', () => {
@@ -206,13 +206,13 @@ describe('cli', () => {
                 '--encoding', 'foo'
               ], options);
               // Should have thrown
-              expect.fail();
+              assert.fail();
             } catch (e) {
-              expect(e).to.be.an('error');
-              expect(e.message).to.equal('Invalid encoding: foo');
+              assert.ok(e instanceof Error);
+              assert.equal(e.message, 'Invalid encoding: foo');
             }
 
-            expect(options.stdout.buffer).to.deep.equal(expected);
+            assert.deepEqual(options.stdout.buffer, expected);
           });
         });
       });
@@ -229,7 +229,7 @@ describe('cli', () => {
             '--reverse'
           ], options);
 
-          expect(options.stdout.buffer).to.deep.equal(expected);
+          assert.deepEqual(options.stdout.buffer, expected);
         });
       });
 
@@ -246,7 +246,7 @@ describe('cli', () => {
             '--reverse'
           ], options);
 
-          expect(options.stdout.buffer).to.deep.equal(expected);
+          assert.deepEqual(options.stdout.buffer, expected);
         });
       });
     });
@@ -282,7 +282,7 @@ describe('cli', () => {
         const actual = await readFile(outputFile);
         const expected = await readFile(path.resolve(__dirname, './fixtures/escaped/latin1-from-utf8.txt'));
 
-        expect(actual).to.deep.equal(expected);
+        assert.deepEqual(actual, expected);
       });
 
       context('and input file is empty', () => {
@@ -296,7 +296,7 @@ describe('cli', () => {
           const actual = await readFile(outputFile);
           const expected = Buffer.alloc(0);
 
-          expect(actual).to.deep.equal(expected);
+          assert.deepEqual(actual, expected);
         });
       });
 
@@ -312,7 +312,7 @@ describe('cli', () => {
           const actual = await readFile(outputFile);
           const expected = await readFile(path.resolve(__dirname, './fixtures/escaped/latin1-from-latin1.txt'));
 
-          expect(actual).to.deep.equal(expected);
+          assert.deepEqual(actual, expected);
         });
 
         context('and value is invalid', () => {
@@ -325,16 +325,16 @@ describe('cli', () => {
                 outputFile
               ], options);
               // Should have thrown
-              expect.fail();
+              assert.fail();
             } catch (e) {
-              expect(e).to.be.an('error');
-              expect(e.message).to.equal('Invalid encoding: foo');
+              assert.ok(e instanceof Error);
+              assert.equal(e.message, 'Invalid encoding: foo');
             }
 
             const actual = await readFile(outputFile);
             const expected = Buffer.alloc(0);
 
-            expect(actual).to.deep.equal(expected);
+            assert.deepEqual(actual, expected);
           });
         });
       });
@@ -351,7 +351,7 @@ describe('cli', () => {
           const actual = await readFile(outputFile);
           const expected = await readFile(path.resolve(__dirname, './fixtures/unescaped/utf8.txt'));
 
-          expect(actual).to.deep.equal(expected);
+          assert.deepEqual(actual, expected);
         });
       });
 
@@ -368,7 +368,7 @@ describe('cli', () => {
           const actual = await readFile(outputFile);
           const expected = await readFile(path.resolve(__dirname, './fixtures/unescaped/latin1.txt'));
 
-          expect(actual).to.deep.equal(expected);
+          assert.deepEqual(actual, expected);
         });
       });
     });
@@ -399,10 +399,10 @@ describe('cli', () => {
             '--help'
           ], options);
           // Stubbed process.exit should have thrown
-          expect.fail();
+          assert.fail();
         } catch (e) {
-          expect(process.stdout.write.callCount).to.equal(1);
-          expect(process.stdout.write.getCall(0).args).to.deep.equal([
+          assert.equal(process.stdout.write.callCount, 1);
+          assert.deepEqual(process.stdout.write.getCall(0).args, [
             `
   Usage: native2ascii [options] [inputfile] [outputfile]
 
@@ -415,8 +415,8 @@ describe('cli', () => {
     -h, --help                 output usage information
 `
           ]);
-          expect(process.exit.callCount).to.be.at.least(1);
-          expect(process.exit.getCall(0).args).to.deep.equal([ 0 ]);
+          assert.ok(process.exit.callCount >= 1);
+          assert.deepEqual(process.exit.getCall(0).args, [ 0 ]);
         } finally {
           cleanUp();
         }
@@ -449,15 +449,15 @@ describe('cli', () => {
             '--version'
           ], options);
           // Stubbed process.exit should have thrown
-          expect.fail();
+          assert.fail();
         } catch (e) {
-          expect(process.stdout.write.callCount).to.equal(1);
-          expect(process.stdout.write.getCall(0).args).to.deep.equal([
+          assert.equal(process.stdout.write.callCount, 1);
+          assert.deepEqual(process.stdout.write.getCall(0).args, [
             `${version}
 `
           ]);
-          expect(process.exit.callCount).to.be.at.least(1);
-          expect(process.exit.getCall(0).args).to.deep.equal([ 0 ]);
+          assert.ok(process.exit.callCount >= 1);
+          assert.deepEqual(process.exit.getCall(0).args, [ 0 ]);
         } finally {
           cleanUp();
         }
@@ -469,7 +469,7 @@ describe('cli', () => {
     it('should write message to stderr', () => {
       cli.writeError('foo', options);
 
-      expect(options.stderr.buffer.toString()).to.equal('foo\n');
+      assert.equal(options.stderr.buffer.toString(), 'foo\n');
     });
   });
 });

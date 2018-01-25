@@ -88,7 +88,7 @@ $ cat ascii.properties | native2ascii --reverse > utf8.properties
 
 ## API
 
-    native2ascii(input[, options])
+### native2ascii(input[, options])
 
 Converts the specified `input` so that it can be encoded in ASCII by using Unicode escapes ("\uxxxx" notation) for all
 characters that are not part of the ASCII character set.
@@ -97,13 +97,13 @@ This function is useful for properties files containing characters not in ISO-88
 
 A reverse conversion can be performed by enabling the `reverse` option.
 
-### Options
+#### Options
 
 | Option    | Description                      | Default |
 | --------- | -------------------------------- | ------- |
 | `reverse` | Whether to reverse the operation | `false` |
 
-### Examples
+#### Examples
 
 Unicode escape characters not in the ASCII character set so that they can be safely written encoded into ASCII:
 

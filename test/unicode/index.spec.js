@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Alasdair Mercer, !ninja
+ * Copyright (C) 2018 Alasdair Mercer, !ninja
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 'use strict';
 
-const { expect } = require('chai');
+const assert = require('assert');
 
 const escape = require('../../src/unicode/escape');
 const index = require('../../src/unicode/index');
@@ -30,7 +30,7 @@ const unescape = require('../../src/unicode/unescape');
 
 describe('unicode/index', () => {
   it('should export correct functions', () => {
-    expect(index.escape).to.equal(escape);
-    expect(index.unescape).to.equal(unescape);
+    assert.equal(index.escape, escape);
+    assert.equal(index.unescape, unescape);
   });
 });

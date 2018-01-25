@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Alasdair Mercer, !ninja
+ * Copyright (C) 2018 Alasdair Mercer, !ninja
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 'use strict';
 
-const { expect } = require('chai');
+const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -34,14 +34,14 @@ const readFile = util.promisify(fs.readFile);
 describe('native2ascii', () => {
   context('when input is null', () => {
     it('should return null', () => {
-      expect(native2ascii(null)).to.equal(null);
+      assert.strictEqual(native2ascii(null), null);
     });
   });
 
   context('when input is undefined', () => {
     it('should return undefined', () => {
       /* eslint-disable no-undefined */
-      expect(native2ascii(undefined)).to.equal(undefined);
+      assert.strictEqual(native2ascii(undefined), undefined);
       /* eslint-enable no-undefined */
     });
   });
@@ -52,7 +52,7 @@ describe('native2ascii', () => {
       const expected = await readFile(path.resolve(__dirname, './fixtures/escaped/latin1-from-utf8.txt'), 'latin1');
       const actual = native2ascii(input);
 
-      expect(actual).to.equal(expected);
+      assert.equal(actual, expected);
     });
 
     context('and input is empty', () => {
@@ -60,7 +60,7 @@ describe('native2ascii', () => {
         const expected = '';
         const actual = native2ascii('');
 
-        expect(actual).to.equal(expected);
+        assert.equal(actual, expected);
       });
     });
   });
@@ -69,9 +69,9 @@ describe('native2ascii', () => {
     it('should escape all non-ASCII characters within input', async() => {
       const input = await readFile(path.resolve(__dirname, './fixtures/unescaped/utf8.txt'), 'utf8');
       const expected = await readFile(path.resolve(__dirname, './fixtures/escaped/latin1-from-utf8.txt'), 'latin1');
-      const actual = native2ascii(input);
+      const actual = native2ascii(input, { reverse: false });
 
-      expect(actual).to.equal(expected, { reverse: false });
+      assert.equal(actual, expected);
     });
 
     context('and input is empty', () => {
@@ -79,7 +79,7 @@ describe('native2ascii', () => {
         const expected = '';
         const actual = native2ascii('', { reverse: false });
 
-        expect(actual).to.equal(expected);
+        assert.equal(actual, expected);
       });
     });
   });
@@ -90,7 +90,7 @@ describe('native2ascii', () => {
       const expected = await readFile(path.resolve(__dirname, './fixtures/unescaped/utf8.txt'), 'utf8');
       const actual = native2ascii(input, { reverse: true });
 
-      expect(actual).to.equal(expected);
+      assert.equal(actual, expected);
     });
 
     context('and input is empty', () => {
@@ -98,7 +98,7 @@ describe('native2ascii', () => {
         const expected = '';
         const actual = native2ascii('', { reverse: true });
 
-        expect(actual).to.equal(expected);
+        assert.equal(actual, expected);
       });
     });
   });

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Alasdair Mercer, !ninja
+ * Copyright (C) 2018 Alasdair Mercer, !ninja
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 
 'use strict';
 
-const { expect } = require('chai');
+const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -37,7 +37,7 @@ describe('unicode/escape', () => {
     const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-ascii.txt'), 'ascii');
     const actual = escape(input);
 
-    expect(actual).to.equal(expected);
+    assert.equal(actual, expected);
   });
 
   it('should only escape non-ASCII characters within ISO-8859-1 character set', async() => {
@@ -45,7 +45,7 @@ describe('unicode/escape', () => {
     const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-latin1.txt'), 'latin1');
     const actual = escape(input);
 
-    expect(actual).to.equal(expected);
+    assert.equal(actual, expected);
   });
 
   it('should only escape non-ASCII characters within UTF-8 character set', async() => {
@@ -53,7 +53,7 @@ describe('unicode/escape', () => {
     const expected = await readFile(path.resolve(__dirname, '../fixtures/escaped/latin1-from-utf8.txt'), 'latin1');
     const actual = escape(input);
 
-    expect(actual).to.equal(expected);
+    assert.equal(actual, expected);
   });
 
   context('when input is empty', () => {
@@ -61,7 +61,7 @@ describe('unicode/escape', () => {
       const expected = '';
       const actual = escape('');
 
-      expect(actual).to.equal(expected);
+      assert.equal(actual, expected);
     });
   });
 });
