@@ -22,7 +22,7 @@
 
 'use strict';
 
-const { expect } = require('chai');
+const assert = require('assert');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -37,7 +37,7 @@ describe('unicode/unescape', () => {
     const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/ascii.txt'), 'ascii');
     const actual = unescape(input);
 
-    expect(actual).to.equal(expected);
+    assert.equal(actual, expected);
   });
 
   it('should only unescape escaped unicode values within ISO-8859-1 character set', async() => {
@@ -45,7 +45,7 @@ describe('unicode/unescape', () => {
     const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/latin1.txt'), 'latin1');
     const actual = unescape(input);
 
-    expect(actual).to.equal(expected);
+    assert.equal(actual, expected);
   });
 
   it('should only unescape escaped unicode values within UTF-8 character set', async() => {
@@ -53,14 +53,14 @@ describe('unicode/unescape', () => {
     const expected = await readFile(path.resolve(__dirname, '../fixtures/unescaped/utf8.txt'), 'utf8');
     const actual = unescape(input);
 
-    expect(actual).to.equal(expected);
+    assert.equal(actual, expected);
   });
 
   it('should ignore case when unescaping escaped unicode values', () => {
     const expected = '\u001a\u001b\u001c\u001d\u001e\u001f';
     const actual = unescape('\\u001A\\u001B\\u001C\\u001D\\u001E\\u001F');
 
-    expect(actual).to.equal(expected);
+    assert.equal(actual, expected);
   });
 
   context('when input is empty', () => {
@@ -68,19 +68,23 @@ describe('unicode/unescape', () => {
       const expected = '';
       const actual = unescape('');
 
-      expect(actual).to.equal(expected);
+      assert.equal(actual, expected);
     });
   });
 
   context('when input contains invalid escaped unicode value', () => {
     it('should throw an error', () => {
-      expect(() => {
+      assert.throws(() => {
         unescape('\\u00ah');
-      }).to.throw(Error, 'Unexpected character "h" found at 5');
+      }, (error) => {
+        return error instanceof Error && error.message === 'Unexpected character "h" found at 5';
+      });
 
-      expect(() => {
+      assert.throws(() => {
         unescape('\\u00a');
-      }).to.throw(Error, 'Insufficient characters found: -1');
+      }, (error) => {
+        return error instanceof Error && error.message === 'Insufficient characters found: -1';
+      });
     });
   });
 });

@@ -22,7 +22,7 @@
 
 'use strict';
 
-const { expect } = require('chai');
+const assert = require('assert');
 
 const escape = require('../../src/unicode/escape');
 const index = require('../../src/unicode/index');
@@ -30,7 +30,7 @@ const unescape = require('../../src/unicode/unescape');
 
 describe('unicode/index', () => {
   it('should export correct functions', () => {
-    expect(index.escape).to.equal(escape);
-    expect(index.unescape).to.equal(unescape);
+    assert.equal(index.escape, escape);
+    assert.equal(index.unescape, unescape);
   });
 });
