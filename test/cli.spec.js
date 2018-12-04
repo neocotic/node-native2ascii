@@ -403,16 +403,13 @@ describe('cli', () => {
         } catch (e) {
           assert.equal(process.stdout.write.callCount, 1);
           assert.deepEqual(process.stdout.write.getCall(0).args, [
-            `
-  Usage: native2ascii [options] [inputfile] [outputfile]
+            `Usage: native2ascii [options] [inputfile] [outputfile]
 
-
-  Options:
-
-    -e, --encoding <encoding>  specify encoding to be used by the conversion procedure
-    -r, --reverse              perform reverse operation
-    -V, --version              output the version number
-    -h, --help                 output usage information
+Options:
+  -e, --encoding <encoding>  specify encoding to be used by the conversion procedure
+  -r, --reverse              perform reverse operation
+  -V, --version              output the version number
+  -h, --help                 output usage information
 `
           ]);
           assert.ok(process.exit.callCount >= 1);

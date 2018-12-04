@@ -44,10 +44,8 @@ $ npm install --global node-native2ascii
 ## CLI
 
     Usage: native2ascii [options] [inputfile] [outputfile]
-    
-    
+
     Options:
-    
       -e, --encoding <encoding>  specify encoding to be used by the conversion procedure
       -r, --reverse              perform reverse operation
       -V, --version              output the version number
