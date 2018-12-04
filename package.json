@@ -2,14 +2,14 @@
   "name": "node-native2ascii",
   "version": "0.1.2",
   "description": "Node.js implementation of Java's Native-to-ASCII Converter",
-  "homepage": "https://github.com/NotNinja/node-native2ascii",
+  "homepage": "https://github.com/neocotic/node-native2ascii",
   "bugs": {
-    "url": "https://github.com/NotNinja/node-native2ascii/issues"
+    "url": "https://github.com/neocotic/node-native2ascii/issues"
   },
   "author": {
     "name": "Alasdair Mercer",
     "email": "mercer.alasdair@gmail.com",
-    "url": "https://not.ninja"
+    "url": "https://neocotic.com"
   },
   "license": "MIT",
   "keywords": [
@@ -22,7 +22,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/NotNinja/node-native2ascii.git"
+    "url": "https://github.com/neocotic/node-native2ascii.git"
   },
   "dependencies": {
     "commander": "^2.13.0",

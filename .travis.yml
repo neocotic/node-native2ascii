@@ -9,8 +9,3 @@ after_success:
   - npm run coverage
 notifications:
   email: false
-  slack:
-    rooms:
-      - secure: Bu+WX8d4eWg+hubGeMZQ5j/mdt0LmRbohp3NO9DQGi2/026Z7N/tGkienEaD8oOQY3ZORaQuGbMCLBHrMWUIAz8kaeMqtvRjj3a8ZGNVZ/2kFLwv2gQnMGkigULZNbDFKRd6I7WkEfOUU4ANsXNDzsfdM3h2jXbIGew922adF0GkQGm8npLAfshj32Mogwe1oU78pVFukW8TcWrL2iZDRaBk2mrPYfTyP3scbdYeOIDDgWvnV0DkXHP2oPI9mMjzuIOBEXF5cBv7wMMHOu1/dtZzN/zrMB1Hm0iFsdb2TT8NgpTjaxb3y0JuEgC+e1TB6VznZ53HwED5G4eDBFE7Nz4iJ1y4rMTOzDxqMhXPOgwD4DOg2JDgZeT3bm1De63fpeM7vbfuZnGAnm5u9NR2ylVcH0yCCfdH0WV0nhA+k384MQH/WJe1xerrIu7kMOh6VyM7BxgDvpROn3vWrkWfPWufXeyX8ZSaA2j0OcYpQ4nfF2dhsmCEMeKhNU5AgdJhCVa97STsLz8lH9RMSrYz95HH/y6Yz3YZ6te+lCZLokNjo3vO89+hoUHCe5obxwxD9zLWsBhtxtKKgzLGn45JSZOA5zr3QNhQlzw8FkDBrVyLlYKUoP2+kW8eZpTM0udRClSrquXf1Kf0pbReKHemrK73arSMesd/FAjM8hRCtIA=
-    on_failure: change
-    on_success: change
