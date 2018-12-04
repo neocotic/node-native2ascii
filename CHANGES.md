@@ -1,3 +1,12 @@
+## Version 0.2.0, 2018.12.04
+
+* added package-lock.json file to enable "npm audit" [b2ff6af](https://github.com/neocotic/node-native2ascii/commit/b2ff6af)
+* moved from !ninja to neocotic [7111853](https://github.com/neocotic/node-native2ascii/commit/7111853)
+* modified CI to now target Node.js 8, 10, and 11 [6471d3a](https://github.com/neocotic/node-native2ascii/commit/6471d3a)
+* bumped devDependencies [5673ff3](https://github.com/neocotic/node-native2ascii/commit/5673ff3)
+* bumped dependencies [40dc1e9](https://github.com/neocotic/node-native2ascii/commit/40dc1e9)
+* corrected input/output syntax for API examples [d475abd](https://github.com/neocotic/node-native2ascii/commit/d475abd)
+
 ## Version 0.1.2, 2018.01.25
 
 * Move Unicode escape and unescape logic out to new `escape-unicode` and `unescape-unicode` modules respectively
