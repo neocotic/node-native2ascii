@@ -7,14 +7,14 @@
     888  888 888  888 Y88b.  888  Y8bd8P  Y8b.     888"       888  888      X88 Y88b.    888 888
     888  888 "Y888888  "Y888 888   Y88P    "Y8888  888888888  "Y888888  88888P'  "Y8888P 888 888
 
-[node-native2ascii](https://github.com/NotNinja/node-native2ascii) is a [Node.js](https://nodejs.org) implementation of
+[node-native2ascii](https://github.com/neocotic/node-native2ascii) is a [Node.js](https://nodejs.org) implementation of
 Java's Native-to-ASCII Converter.
 
-[![Build Status](https://img.shields.io/travis/NotNinja/node-native2ascii/develop.svg?style=flat-square)](https://travis-ci.org/NotNinja/node-native2ascii)
-[![Coverage](https://img.shields.io/codecov/c/github/NotNinja/node-native2ascii/develop.svg?style=flat-square)](https://codecov.io/gh/NotNinja/node-native2ascii)
-[![Dependency Status](https://img.shields.io/david/NotNinja/node-native2ascii.svg?style=flat-square)](https://david-dm.org/NotNinja/node-native2ascii)
-[![Dev Dependency Status](https://img.shields.io/david/dev/NotNinja/node-native2ascii.svg?style=flat-square)](https://david-dm.org/NotNinja/node-native2ascii?type=dev)
-[![License](https://img.shields.io/npm/l/node-native2ascii.svg?style=flat-square)](https://github.com/NotNinja/node-native2ascii/blob/master/LICENSE.md)
+[![Build Status](https://img.shields.io/travis/neocotic/node-native2ascii/develop.svg?style=flat-square)](https://travis-ci.org/neocotic/node-native2ascii)
+[![Coverage](https://img.shields.io/codecov/c/github/neocotic/node-native2ascii/develop.svg?style=flat-square)](https://codecov.io/gh/neocotic/node-native2ascii)
+[![Dependency Status](https://img.shields.io/david/neocotic/node-native2ascii.svg?style=flat-square)](https://david-dm.org/neocotic/node-native2ascii)
+[![Dev Dependency Status](https://img.shields.io/david/dev/neocotic/node-native2ascii.svg?style=flat-square)](https://david-dm.org/neocotic/node-native2ascii?type=dev)
+[![License](https://img.shields.io/npm/l/node-native2ascii.svg?style=flat-square)](https://github.com/neocotic/node-native2ascii/blob/master/LICENSE.md)
 [![Release](https://img.shields.io/npm/v/node-native2ascii.svg?style=flat-square)](https://www.npmjs.com/package/node-native2ascii)
 
 * [Install](#install)
@@ -44,10 +44,8 @@ $ npm install --global node-native2ascii
 ## CLI
 
     Usage: native2ascii [options] [inputfile] [outputfile]
-    
-    
+
     Options:
-    
       -e, --encoding <encoding>  specify encoding to be used by the conversion procedure
       -r, --reverse              perform reverse operation
       -V, --version              output the version number
@@ -111,7 +109,7 @@ Unicode escape characters not in the ASCII character set so that they can be saf
 const native2ascii = require('node-native2ascii');
 
 native2ascii('I ♥ native2ascii!');
-//=> "I \u2665 native2ascii!"
+//=> "I \\u2665 native2ascii!"
 ```
 
 These can be later unescaped by reversing the operation:
@@ -119,27 +117,27 @@ These can be later unescaped by reversing the operation:
 ``` javascript
 const native2ascii = require('node-native2ascii');
 
-native2ascii('I \u2665 native2ascii!', { reverse: true });
+native2ascii('I \\u2665 native2ascii!', { reverse: true });
 //=> "I ♥ native2ascii!"
 ```
 
 ## Bugs
 
 If you have any problems with node-native2ascii or would like to see changes currently in development you can do so
-[here](https://github.com/NotNinja/node-native2ascii/issues).
+[here](https://github.com/neocotic/node-native2ascii/issues).
 
 ## Contributors
 
 If you want to contribute, you're a legend! Information on how you can do so can be found in
-[CONTRIBUTING.md](https://github.com/NotNinja/node-native2ascii/blob/master/CONTRIBUTING.md). We want your suggestions
+[CONTRIBUTING.md](https://github.com/neocotic/node-native2ascii/blob/master/CONTRIBUTING.md). We want your suggestions
 and pull requests!
 
 A list of node-native2ascii contributors can be found in
-[AUTHORS.md](https://github.com/NotNinja/node-native2ascii/blob/master/AUTHORS.md).
+[AUTHORS.md](https://github.com/neocotic/node-native2ascii/blob/master/AUTHORS.md).
 
 ## License
 
-See [LICENSE.md](https://github.com/NotNinja/node-native2ascii/raw/master/LICENSE.md) for more information on our MIT
-license.
+Copyright © 2018 Alasdair Mercer
 
-[![Copyright !ninja](https://cdn.rawgit.com/NotNinja/branding/master/assets/copyright/base/not-ninja-copyright-186x25.png)](https://not.ninja)
+See [LICENSE.md](https://github.com/neocotic/node-native2ascii/raw/master/LICENSE.md) for more information on our MIT
+license.

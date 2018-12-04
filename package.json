@@ -1,15 +1,15 @@
 {
   "name": "node-native2ascii",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Node.js implementation of Java's Native-to-ASCII Converter",
-  "homepage": "https://github.com/NotNinja/node-native2ascii",
+  "homepage": "https://github.com/neocotic/node-native2ascii",
   "bugs": {
-    "url": "https://github.com/NotNinja/node-native2ascii/issues"
+    "url": "https://github.com/neocotic/node-native2ascii/issues"
   },
   "author": {
     "name": "Alasdair Mercer",
     "email": "mercer.alasdair@gmail.com",
-    "url": "https://not.ninja"
+    "url": "https://neocotic.com"
   },
   "license": "MIT",
   "keywords": [
@@ -22,21 +22,21 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/NotNinja/node-native2ascii.git"
+    "url": "https://github.com/neocotic/node-native2ascii.git"
   },
   "dependencies": {
-    "commander": "^2.13.0",
-    "escape-unicode": "^0.1.0",
-    "unescape-unicode": "^0.1.0"
+    "commander": "^2.19.0",
+    "escape-unicode": "^0.2.0",
+    "unescape-unicode": "^0.2.0"
   },
   "devDependencies": {
-    "codecov": "^3.0.0",
-    "eslint": "^4.16.0",
-    "eslint-config-notninja": "^0.2.3",
-    "mocha": "^5.0.0",
-    "nyc": "^11.4.1",
-    "sinon": "^4.2.1",
-    "tmp": "0.0.33"
+    "codecov": "^3.1.0",
+    "eslint": "^5.9.0",
+    "eslint-config-notninja": "^0.4.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
+    "sinon": "^7.1.1",
+    "tmp": "^0.0.33"
   },
   "bin": {
     "native2ascii": "bin/native2ascii"
