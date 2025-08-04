@@ -1,3 +1,13 @@
+## Version 0.3.0, 2025.08.04
+
+* **Breaking Change:** Return empty string if `input` parameter is either `null` or `undefined`
+* **Breaking Change:** Print help output and exit when STDIN is empty and no command line arguments passed to CLI
+* Explicitly add full support for converting characters within the Basic Multilingual Plane (BMP)
+* Rewrite the entire codebase in TypeScript and support both ESM and CJS usage
+* Improve documentation
+* Improve the developer experience for contributors with better tooling
+* Bump all dependencies to latest versions
+
 ## Version 0.2.0, 2018.12.04
 
 * added package-lock.json file to enable "npm audit" [b2ff6af](https://github.com/neocotic/node-native2ascii/commit/b2ff6af)

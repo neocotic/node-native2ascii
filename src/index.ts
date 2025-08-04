@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-
 /*
- * Copyright (C) 2018 Alasdair Mercer
+ * Copyright (C) 2025 neocotic
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -22,16 +20,4 @@
  * SOFTWARE.
  */
 
-'use strict';
-
-const { parse, writeError } = require('../src/cli');
-
-(async() => {
-  try {
-    await parse(process.argv);
-  } catch (e) {
-    writeError(`native2ascii failed: ${e.stack}`);
-
-    process.exit(1);
-  }
-})();
+export * from "./native2ascii.js";
