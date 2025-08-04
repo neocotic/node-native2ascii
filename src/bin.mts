@@ -1,5 +1,7 @@
+#!/usr/bin/env node
+
 /*
- * Copyright (C) 2018 Alasdair Mercer
+ * Copyright (C) 2025 neocotic
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,17 +22,19 @@
  * SOFTWARE.
  */
 
-'use strict';
+import { loadPackageJson } from "package-json-from-dist";
+import { fail, parse } from "./cli.js";
 
-const assert = require('assert');
+const { version } = loadPackageJson(import.meta.url, "../package.json");
 
-const escape = require('../../src/unicode/escape');
-const index = require('../../src/unicode/index');
-const unescape = require('../../src/unicode/unescape');
+const main = async () => {
+  const options = { version };
 
-describe('unicode/index', () => {
-  it('should export correct functions', () => {
-    assert.equal(index.escape, escape);
-    assert.equal(index.unescape, unescape);
-  });
-});
+  try {
+    await parse(process.argv, options);
+  } catch (e) {
+    fail(e, options);
+  }
+};
+
+main().catch(console.error);

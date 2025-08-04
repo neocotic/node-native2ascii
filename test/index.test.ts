@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Alasdair Mercer
+ * Copyright (C) 2025 neocotic
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,41 +20,15 @@
  * SOFTWARE.
  */
 
-'use strict';
+import * as assert from "node:assert";
+import { describe, it } from "node:test";
+import * as index from "../src/index.js";
 
-const unescapeUnicode = require('unescape-unicode');
+describe("index", () => {
+  it("should only have expected named exports", () => {
+    const expected = new Set(["native2ascii"]);
+    const actual = new Set(Object.keys(index));
 
-/**
- * Converts all Unicode escapes ("\uxxxx" notation) within the specified <code>input</code> into their corresponding
- * Unicode characters.
- *
- * This function will throw an error if <code>input</code> contains a malformed Unicode escape.
- *
- * @param {string} input - the string to be converted
- * @return {string} The converted output from <code>input</code>.
- * @throws {Error} If <code>input</code> contains a malformed Unicode escape.
- */
-function unescape(input) {
-  let result = '';
-
-  for (let i = 0, length = input.length; i < length; i++) {
-    let ch = input[i];
-
-    if (ch === '\\') {
-      ch = input[++i];
-
-      if (ch === 'u') {
-        result += unescapeUnicode(input, i + 1);
-        i += 4;
-      } else {
-        result += `\\${ch}`;
-      }
-    } else {
-      result += ch;
-    }
-  }
-
-  return result;
-}
-
-module.exports = unescape;
+    assert.deepStrictEqual(actual, expected);
+  });
+});
